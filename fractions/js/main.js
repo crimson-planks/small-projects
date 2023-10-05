@@ -11,7 +11,6 @@ function reduceFraction(){
         document.getElementById("numerator").innerHTML=numerator.toString();
         document.getElementById("denominator").innerHTML=denominator.toString();
     }
-    console.log(gcd);
 }
 function updateNumerator(){
     numerator++;
