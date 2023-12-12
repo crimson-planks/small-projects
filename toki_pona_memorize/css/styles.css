@@ -1,0 +1,23 @@
+html{
+    width: 100%;
+    height: 100%;
+}
+body{
+    width: 100%;
+    height: 100%;
+}
+#app{
+    width: 100%;
+    height: 100%;
+}
+#multiple-choice-div{
+    display: grid;
+    width: 80%;
+    height: 50%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.multiple-choice-button{
+    width: 100%;
+    height: 100%;
+}

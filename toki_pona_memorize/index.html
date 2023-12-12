@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toki Pona Memorizing Thing</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <button v-on:click="">load data</button>
+        {{visual.promptString}}
+        <div id="multiple-choice-div">
+            <div v-for="item in game.incrementingArray">
+                <button class="multiple-choice-button" v-on:click="clickMultipleChoiceButton(item)">{{visual.choiceArray[item]}}</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="js/main.js"></script>
+</html>
