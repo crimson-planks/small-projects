@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="tok">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>April Fools!</title>
+</head>
+<body>
+<h2>sitelen Lasina -> :sE$ ak</h2>
+<div id="ilo">
+    <label for="lasina">o pana e sitelen Lasina</label>
+    <textarea name="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteELasinaTawaAki()">
+    </textarea>
+    <br>{{ AkiPanaPini }}
+</div>
+</body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+    const lonEIlo = Vue.createApp;
+    const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j']
+    const klpPiKalamaKon=['a','e','i','o','u']
+    const klpPiKalamaPini=['n']
+    const sitelenKipisi=[' '];
+    const AnteAkiTawaLasina={
+        ' ': " ",
+        '"': "jen",
+        "!": "in",
+        "@": "mon",
+        "#": "nan",
+        $: "len",
+        "%": "pin",
+        "&": "en",
+        "'": "lan",
+        '(': 'nin',
+        ')': 'nun',
+        "*": "no",
+        '+': 'pun',
+        ",": "ju",
+        "-": "nen",
+        ".": ".",
+        "/": "nu",
+        0: 'u',
+        1: 'wan',
+        2: 'tu',
+        3: 'mun',
+        4: 'sun',
+        5: 'lu',
+        6: 'pan',
+        7: 'on',
+        8: 'min',
+        9: 'men',
+        ":": '"',
+        ";": "lun",
+        "<": "jun",
+        "=": "pon",
+        ">": "jon",
+        "?": "me",
+        "@": "mon",
+        A: 'an',
+        B: 'pe',
+        C: 'sin',
+        D: 'ton',
+        E: 'te',
+        F: 'pen',
+        G: 'ke',
+        H: 'ko',
+        I: 'lin',
+        J: 'jo',
+        K: 'ka',
+        L: 'la',
+        M: 'ma',
+        N: 'ni',
+        O: 'mo',
+        P: 'pi',
+        Q: 'kin',
+        R: 'lon',
+        S: 'so',
+        T: 'ta',
+        U: 'un',
+        V: 'we',
+        W: 'wi',
+        X: 'tan',
+        Y: 'ja',
+        Z: 'se',
+        "[": 'sen',
+        "\\": 'son',
+        "]": 'san',
+        '^': 'ne',
+        "_": 'non',
+        '`': 'man',
+        a: 'a',
+        b: 'pa',
+        c: 'sa',
+        d: 'tun',
+        e: 'e',
+        f: 'pu',
+        g: 'ken',
+        h: 'kon',
+        i: 'i',
+        j: 'jan',
+        k: 'ki',
+        l: 'li',
+        m: 'mi',
+        n: 'na',
+        o: 'o',
+        p: 'po',
+        q: 'ku',
+        r: 'le',
+        s: 'si',
+        t: 'to',
+        u: 'mu',
+        v: 'wen',
+        w: 'wa',
+        x: 'ten',
+        y: 'je',
+        z: 'su',
+        "{": 'kun',
+        "|": 'win',
+        "}": 'kan',
+        "~": 'lo',
+        "Ë": "tin",
+        "Ï": "jin",
+        "Ö": "won",
+        "Ü": "wun",
+        "ë":"ti",
+        "ï":"ji",
+        "ö":"wo",
+        "ü":"wu",
+        "…": "n"
+    }
+    const AnteMaENimiENanpa=function(panaOpen){
+        let panaPini = {};
+        for(nimi in panaOpen){
+            panaPini[panaOpen[nimi]]=nimi;
+        }
+        return panaPini;
+    }
+    const AnteLasinaTawaAki=AnteMaENimiENanpa(AnteAkiTawaLasina);
+    const kipisiEKulupuKalama=function(sitelenLasina){
+        let klpKipisi=[];
+        let parsingCharList=[];
+        let state="onset";
+        let i = 0;
+        /*
+        onset: finding onset
+        vowel: finding vowel
+        coda: finding 'n'
+        */
+        const panaEKipisi=()=>{
+                klpKipisi.push(parsingCharList.join(''));
+                parsingCharList=[];
+        };
+        for(i in sitelenLasina){
+            //console.log(`c: ${sitelenLasina[i]}, state: ${state}`);
+            if(sitelenKipisi.includes(sitelenLasina[i])){
+                panaEKipisi();
+                klpKipisi.push(sitelenLasina[i]);
+                state="onset"
+                continue;
+            }
+            if(state==="onset"){
+                if(klpPiKalamaKiwen.includes(sitelenLasina[i])){
+                    if(parsingCharList.length!==0){
+                        panaEKipisi();
+                    }
+                    parsingCharList.push(sitelenLasina[i]);
+                    state="vowel";
+                }
+                else if(klpPiKalamaKon.includes(sitelenLasina[i])){
+                    //console.log("previous: " + parsingCharList[parsingCharList.length-1]);
+                    if(parsingCharList[parsingCharList.length-1]==='n'){ "pon{a}"
+                        parsingCharList.pop();
+                        panaEKipisi();
+                        parsingCharList.push('n');
+                    }
+                    parsingCharList.push(sitelenLasina[i]);
+                    state="coda";
+                }
+                else console.error(`ijo ike li lon onset: ${sitelenLasina[i]}`)
+                
+            }
+            else if(state=="vowel"){
+                if(klpPiKalamaKon.includes(sitelenLasina[i])){
+                    parsingCharList.push(sitelenLasina[i]);
+                    state="coda";
+                }
+                else console.error(`ijo ike li lon vowel: ${sitelenLasina[i]}`)
+            }
+            else if(state=="coda"){
+                if(sitelenLasina[i]==='n'){
+                    parsingCharList.push(sitelenLasina[i]);
+                    state="onset";
+                }
+                else if(klpPiKalamaKiwen.includes(sitelenLasina[i])){
+                    panaEKipisi();
+                    parsingCharList.push(sitelenLasina[i]);
+                    state="vowel";
+                }
+                else if(klpPiKalamaKon.includes(sitelenLasina[i])) 
+                    console.error(`kalama kon tu li lon ${i}`)
+                else console.error(`ijo ike li lon coda: ${sitelenLasina[i]}`)
+            }
+        }panaEKipisi();
+        return klpKipisi;
+    };
+    const lasinaTawaAki=function(sitelenLasina){
+        const kipisi = kipisiEKulupuKalama(sitelenLasina);
+        let panaPini = [];
+        for(i in kipisi){
+            if(!(kipisi[i] in AnteLasinaTawaAki)) {
+                console.error(`kipisi ike: ${kipisi[i]}`);
+                continue;
+            }
+            panaPini.push(AnteLasinaTawaAki[kipisi[i]]);
+        }
+        return panaPini.join('');
+    };
+    lonEIlo({
+      data() {
+        return {
+          toki: 'ma o, toki a!',
+          lasinaInput: 'toki pona',
+          AkiPanaPini: ''
+        }
+      },
+      methods: {
+        AnteELasinaTawaAki(){
+            console.log(this.lasinaInput)
+            this.AkiPanaPini=lasinaTawaAki(this.lasinaInput);
+        }
+      }
+    }).mount('#ilo')
+  </script>
+  
+</html>
