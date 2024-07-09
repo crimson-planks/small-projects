@@ -248,25 +248,33 @@
         return panaPini.join('');
     };
     lonEIlo({
-      data() {
-        return {
-          toki: 'ma o, toki a!',
-          lasinaInput: 'toki pona',
-          akiPanaPini: '',
-          akiInput: 'tk pn',
-          lasinaPanaPini: '',
-        }
-      },
-      methods: {
-        AnteELasinaTawaAki(){
-            console.log(this.lasinaInput)
-            this.akiPanaPini=lasinaTawaAki(this.lasinaInput);
+        data() {
+            return {
+            toki: 'ma o, toki a!',
+            lasinaInput: 'toki pona',
+            akiPanaPini: '',
+            akiInput: 'tk pn',
+            lasinaPanaPini: '',
+            }
         },
-        AnteEAkiTawaLasina(){
-            console.log(this.akiInput)
-            this.lasinaPanaPini=akiTawaLasina(this.akiInput);
+        created() {
+            this.AnteELasinaTawaAki();
+            this.AnteEAkiTawaLasina();
+            console.log(`ilo li lon!`);
+        },
+        mounted() {
+            console.log(`ilo li lon pona!`);
+        },
+        methods: {
+            AnteELasinaTawaAki(){
+                //console.log(this.lasinaInput)
+                this.akiPanaPini=lasinaTawaAki(this.lasinaInput);
+            },
+            AnteEAkiTawaLasina(){
+                //console.log(this.akiInput)
+                this.lasinaPanaPini=akiTawaLasina(this.akiInput);
+            }
         }
-      }
     }).mount('#ilo')
   </script>
   
