@@ -6,12 +6,18 @@
     <title>April Fools!</title>
 </head>
 <body>
-<h2>sitelen Lasina -> :sE$ ak</h2>
 <div id="ilo">
+    <h2>sitelen Lasina -> sE$ :ak</h2>
     <label for="lasina">o pana e sitelen Lasina</label>
     <textarea name="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteELasinaTawaAki()">
     </textarea>
-    <br>{{ AkiPanaPini }}
+    <br>{{ akiPanaPini }}
+    <div style="min-height: 64px;"></div>
+    <h2>sE$ :ak -> sitelen Lasina</h2>
+    <label for="aki">o pana e sitelen Aki</label>
+    <textarea name="aki" rows="5" cols="33" v-model="akiInput" @input="AnteEAkiTawaLasina()">
+    </textarea>
+    <br>{{ lasinaPanaPini }}
 </div>
 </body>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -21,8 +27,9 @@
     const klpPiKalamaKon=['a','e','i','o','u']
     const klpPiKalamaPini=['n']
     const sitelenKipisi=[' '];
+    const sitelenLiAnteAlaTawaAki=[" "]
+    const sitelenLiAnteAlaTawaLasina=[" "]
     const AnteAkiTawaLasina={
-        ' ': " ",
         '"': "jen",
         "!": "in",
         "@": "mon",
@@ -136,6 +143,9 @@
         return panaPini;
     }
     const AnteLasinaTawaAki=AnteMaENimiENanpa(AnteAkiTawaLasina);
+    const PanaESitelenIke=function(stl){
+        return `'${stl}' (U+${stl.charCodeAt(0).toString(16).padStart(4,'0').toUpperCase()})`
+    }
     const kipisiEKulupuKalama=function(sitelenLasina){
         let klpKipisi=[];
         let parsingCharList=[];
@@ -176,7 +186,7 @@
                     parsingCharList.push(sitelenLasina[i]);
                     state="coda";
                 }
-                else console.error(`ijo ike li lon onset: ${sitelenLasina[i]}`)
+                else console.error(`ijo ike li lon onset: ${PanaESitelenIke(sitelenLasina[i])}`)
                 
             }
             else if(state=="vowel"){
@@ -184,7 +194,7 @@
                     parsingCharList.push(sitelenLasina[i]);
                     state="coda";
                 }
-                else console.error(`ijo ike li lon vowel: ${sitelenLasina[i]}`)
+                else console.error(`ijo ike li lon vowel: ${PanaESitelenIke(sitelenLasina[i])}`)
             }
             else if(state=="coda"){
                 if(sitelenLasina[i]==='n'){
@@ -196,9 +206,12 @@
                     parsingCharList.push(sitelenLasina[i]);
                     state="vowel";
                 }
-                else if(klpPiKalamaKon.includes(sitelenLasina[i])) 
-                    console.error(`kalama kon tu li lon ${i}`)
-                else console.error(`ijo ike li lon coda: ${sitelenLasina[i]}`)
+                else if(klpPiKalamaKon.includes(sitelenLasina[i])) {
+                    console.warn(`kalama kon tu li lon ${i}`);
+                    panaEKipisi();
+                    parsingCharList.push(sitelenLasina[i]);
+                }
+                else console.error(`ijo ike li lon coda: ${PanaESitelenIke(sitelenLasina[i])}`)
             }
         }panaEKipisi();
         return klpKipisi;
@@ -207,6 +220,10 @@
         const kipisi = kipisiEKulupuKalama(sitelenLasina);
         let panaPini = [];
         for(i in kipisi){
+            if(sitelenLiAnteAlaTawaAki.includes(kipisi[i])){
+                panaPini.push(kipisi[i]);
+                continue;
+            }
             if(!(kipisi[i] in AnteLasinaTawaAki)) {
                 console.error(`kipisi ike: ${kipisi[i]}`);
                 continue;
@@ -215,18 +232,39 @@
         }
         return panaPini.join('');
     };
+    const akiTawaLasina=function(sitelenAki){
+        panaPini = [];
+        for(i in sitelenAki){
+            if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
+                panaPini.push(sitelenAki[i]);
+                continue;
+            }
+            if(!(sitelenAki[i] in AnteAkiTawaLasina)) {
+                console.error(`sitelen ike: ${PanaESitelenIke(sitelenAki[i])}`);
+                continue;
+            }
+            panaPini.push(AnteAkiTawaLasina[sitelenAki[i]]);
+        }
+        return panaPini.join('');
+    };
     lonEIlo({
       data() {
         return {
           toki: 'ma o, toki a!',
           lasinaInput: 'toki pona',
-          AkiPanaPini: ''
+          akiPanaPini: '',
+          akiInput: 'tk pn',
+          lasinaPanaPini: '',
         }
       },
       methods: {
         AnteELasinaTawaAki(){
             console.log(this.lasinaInput)
-            this.AkiPanaPini=lasinaTawaAki(this.lasinaInput);
+            this.akiPanaPini=lasinaTawaAki(this.lasinaInput);
+        },
+        AnteEAkiTawaLasina(){
+            console.log(this.akiInput)
+            this.lasinaPanaPini=akiTawaLasina(this.akiInput);
         }
       }
     }).mount('#ilo')
