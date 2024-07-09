@@ -26,9 +26,9 @@
     const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j']
     const klpPiKalamaKon=['a','e','i','o','u']
     const klpPiKalamaPini=['n']
-    const sitelenKipisi=[' '];
-    const sitelenLiAnteAlaTawaAki=[" "]
-    const sitelenLiAnteAlaTawaLasina=[" "]
+    const sitelenKipisi=[' ','\n','.'];
+    const sitelenLiAnteAlaTawaAki=[" ","\n",""]
+    const sitelenLiAnteAlaTawaLasina=[" ","\n",""]
     const AnteAkiTawaLasina={
         '"': "jen",
         "!": "in",
@@ -146,6 +146,10 @@
     const PanaESitelenIke=function(stl){
         return `'${stl}' (U+${stl.charCodeAt(0).toString(16).padStart(4,'0').toUpperCase()})`
     }
+    const panaESitelenMuteIke=function(stl){
+        if(stl.length===1) return PanaESitelenIke(stl);
+        return `'${stl}' (length: ${stl?.length})`
+    }
     const kipisiEKulupuKalama=function(sitelenLasina){
         let klpKipisi=[];
         let parsingCharList=[];
@@ -163,8 +167,9 @@
         for(i in sitelenLasina){
             //console.log(`c: ${sitelenLasina[i]}, state: ${state}`);
             if(sitelenKipisi.includes(sitelenLasina[i])){
-                panaEKipisi();
+                if(parsingCharList.length!==0) panaEKipisi();
                 klpKipisi.push(sitelenLasina[i]);
+                //panaEKipisi();
                 state="onset"
                 continue;
             }
@@ -217,15 +222,16 @@
         return klpKipisi;
     };
     const lasinaTawaAki=function(sitelenLasina){
-        const kipisi = kipisiEKulupuKalama(sitelenLasina);
+        const kipisi = kipisiEKulupuKalama(sitelenLasina.toLowerCase());
+        //console.log(kipisi);
         let panaPini = [];
         for(i in kipisi){
             if(sitelenLiAnteAlaTawaAki.includes(kipisi[i])){
                 panaPini.push(kipisi[i]);
                 continue;
             }
-            if(!(kipisi[i] in AnteLasinaTawaAki)) {
-                console.error(`kipisi ike: ${kipisi[i]}`);
+            else if(!(kipisi[i] in AnteLasinaTawaAki)) {
+                console.error(`kipisi ike: ${panaESitelenMuteIke(kipisi[i])}`);
                 continue;
             }
             panaPini.push(AnteLasinaTawaAki[kipisi[i]]);
@@ -251,9 +257,9 @@
         data() {
             return {
             toki: 'ma o, toki a!',
-            lasinaInput: 'toki pona',
+            lasinaInput: 'sina ken ala toki e ijo la sina sona ala e ona.',
             akiPanaPini: '',
-            akiInput: 'tk pn',
+            akiInput: 'sE$ pn l Yk Tw m. xp KM L m sE$ :ak:',
             lasinaPanaPini: '',
             }
         },
