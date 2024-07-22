@@ -8,10 +8,13 @@ sample_rate = 44100  # samples per second
 duration = 2.0      # seconds
 
 base_frequency= 440.0
-relative_frequency_list = np.around(np.log2(np.arange(1,6))*12)/12
+
+#np.exp2(np.around(np.log2(np.arange(1,31))*41)/41)
+#np.arange(1,31)
+relative_frequency_list = np.exp2(np.around(np.log2(np.arange(1,100))*32)/32)
 frequency_list = base_frequency*relative_frequency_list
 print(frequency_list)
-amp_list: list[int] = [1,1/8,1/27,1/64,1/125]   # amps
+amp_list: list[int] = [1/x for x in range(1,100)]   # amps
 
 
 # Generate the sine wave
