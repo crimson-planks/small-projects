@@ -8,7 +8,7 @@
     <meta name="language" content="tok">
     <meta property="og:type" content="website">
     <meta property="og:title" content="sE$ :ak">
-    <meta property="og:description" content="ilo ni li ken ante e sitelen Lasina tawa sE$ :ak:. kin la ona li ken ante e sE$ :ak: tawa sitelen Lasina.">
+    <meta property="og:description" content="suno pi toki pona li lon! ilo ni li ken ante e sitelen Lasina tawa sE$ :ak:. kin la ona li ken ante e sE$ :ak: tawa sitelen Lasina.">
     <meta property="og:image" content="">
     <meta property="og:url" content="">
     <title>sE$ :ak</title>
@@ -17,29 +17,36 @@
 <div id="ilo">
     <h2>sitelen Lasina -> sE$ :ak</h2>
     <label for="lasina">o pana e sitelen Lasina</label>
-    <textarea name="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteELasinaTawaAki()">
+    <textarea id="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteELasinaTawaAki()">
     </textarea>
     <br>{{ akiPanaPini }}
     <div style="min-height: 64px;"></div>
     <h2>sE$ :ak -> sitelen Lasina</h2>
     <label for="aki">o pana e sitelen Aki</label>
-    <textarea name="aki" rows="5" cols="33" v-model="akiInput" @input="AnteEAkiTawaLasina()">
+    <textarea id="aki" rows="5" cols="33" v-model="akiInput" @input="AnteEAkiTawaLasina()">
     </textarea>
     <br>{{ lasinaPanaPini }}
+    <a id="lukin-e-sptp" href="https://www.youtube.com/watch?v=ECH9E7PM0eQ">o lukin e suno pi toki pona lon suno mute ale mute tu tu a!</a>
 </div>
 </body>
 <style>
-
+#lukin-e-sptp{
+    position: fixed;
+    margin: auto;
+    bottom: 10%;
+}
 </style>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
     const lonEIlo = Vue.createApp;
+    const sitelenSuli = ['M','N','P','T','K','S','W','L','J','A','E','I','O','U'];
     const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j']
     const klpPiKalamaKon=['a','e','i','o','u']
     const klpPiKalamaPini=['n']
     const sitelenKipisi=[' ','\n','.','"'];
     const sitelenLiAnteAlaTawaAki=[" ","\n",""]
     const sitelenLiAnteAlaTawaLasina=[" ","\n",""]
+    const locale = undefined;
     const AnteAkiTawaLasina={
         '"': "jen",
         "!": "in",
@@ -140,10 +147,10 @@
         "Ï": "jin",
         "Ö": "won",
         "Ü": "wun",
-        "ë":"ti",
-        "ï":"ji",
-        "ö":"wo",
-        "ü":"wu",
+        "ë": "ti",
+        "ï": "ji",
+        "ö": "wo",
+        "ü": "wu",
         "…": "n"
     }
     const AnteMaENimiENanpa=function(panaOpen){
@@ -165,6 +172,8 @@
         let klpKipisi=[];
         let parsingCharList=[];
         let state="onset";
+        let miLonOpenNimi = true;
+        let miLonNimiSuli = false;
         let i = 0;
         /*
         onset: finding onset
@@ -176,56 +185,68 @@
                 parsingCharList=[];
         };
         for(i in sitelenLasina){
-            //console.log(`c: ${sitelenLasina[i]}, state: ${state}`);
+            console.log(`c: ${sitelenLasina[i]}, state: ${state}, miLonOpenNimi: ${miLonOpenNimi}, miLonNimiSuli: ${miLonNimiSuli}`);
+            if(miLonOpenNimi){
+                if(sitelenSuli.includes(sitelenLasina[i])){
+                    klpKipisi.push('"');
+                    miLonNimiSuli = true;
+                }
+                miLonOpenNimi = false;
+            }
             if(sitelenKipisi.includes(sitelenLasina[i])){
                 if(parsingCharList.length!==0) panaEKipisi();
+                if(miLonNimiSuli) {
+                    klpKipisi.push('"');
+                    panaEKipisi();
+                    miLonNimiSuli = false;
+                }
                 klpKipisi.push(sitelenLasina[i]);
                 //panaEKipisi();
                 state="onset"
+                miLonOpenNimi = true;
                 continue;
             }
             if(state==="onset"){
-                if(klpPiKalamaKiwen.includes(sitelenLasina[i])){
+                if(klpPiKalamaKiwen.includes(sitelenLasina[i].toLowerCase())){
                     if(parsingCharList.length!==0){
                         panaEKipisi();
                     }
-                    parsingCharList.push(sitelenLasina[i]);
+                    parsingCharList.push(sitelenLasina[i].toLowerCase());
                     state="vowel";
                 }
-                else if(klpPiKalamaKon.includes(sitelenLasina[i])){
+                else if(klpPiKalamaKon.includes(sitelenLasina[i].toLowerCase())){
                     //console.log("previous: " + parsingCharList[parsingCharList.length-1]);
-                    if(parsingCharList[parsingCharList.length-1]==='n'){ "pon{a}"
+                    if(parsingCharList[parsingCharList.length-1]?.toLowerCase()==='n'){ //"pon{a}"
                         parsingCharList.pop();
                         panaEKipisi();
                         parsingCharList.push('n');
                     }
-                    parsingCharList.push(sitelenLasina[i]);
+                    parsingCharList.push(sitelenLasina[i].toLowerCase());
                     state="coda";
                 }
-                else console.error(`ijo ike li lon onset: ${PanaESitelenIke(sitelenLasina[i])}`)
-                
+                else console.error(`ijo ike li lon onset: ${PanaESitelenIke(sitelenLasina[i])}`);
             }
             else if(state=="vowel"){
-                if(klpPiKalamaKon.includes(sitelenLasina[i])){
-                    parsingCharList.push(sitelenLasina[i]);
+                if(klpPiKalamaKon.includes(sitelenLasina[i].toLowerCase())){
+                    parsingCharList.push(sitelenLasina[i].toLowerCase());
                     state="coda";
                 }
                 else console.error(`ijo ike li lon vowel: ${PanaESitelenIke(sitelenLasina[i])}`)
             }
             else if(state=="coda"){
                 if(sitelenLasina[i]==='n'){
-                    parsingCharList.push(sitelenLasina[i]);
+                    parsingCharList.push(sitelenLasina[i].toLowerCase());
                     state="onset";
                 }
-                else if(klpPiKalamaKiwen.includes(sitelenLasina[i])){
+                else if(klpPiKalamaKiwen.includes(sitelenLasina[i].toLowerCase())){
                     panaEKipisi();
-                    parsingCharList.push(sitelenLasina[i]);
+                    parsingCharList.push(sitelenLasina[i].toLowerCase());
                     state="vowel";
                 }
-                else if(klpPiKalamaKon.includes(sitelenLasina[i])) {
+                else if(klpPiKalamaKon.includes(sitelenLasina[i].toLowerCase())) {
                     console.warn(`kalama kon tu li lon ${i}`);
                     panaEKipisi();
-                    parsingCharList.push(sitelenLasina[i]);
+                    parsingCharList.push(sitelenLasina[i].toLowerCase());
                 }
                 else console.error(`ijo ike li lon coda: ${PanaESitelenIke(sitelenLasina[i])}`)
             }
@@ -233,7 +254,7 @@
         return klpKipisi;
     };
     const lasinaTawaAki=function(sitelenLasina){
-        const kipisi = kipisiEKulupuKalama(sitelenLasina.toLowerCase());
+        const kipisi = kipisiEKulupuKalama(sitelenLasina);
         //console.log(kipisi);
         let panaPini = [];
         for(i in kipisi){
