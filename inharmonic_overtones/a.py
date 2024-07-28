@@ -9,12 +9,16 @@ duration = 2.0      # seconds
 
 base_frequency= 440.0
 
-#np.exp2(np.around(np.log2(np.arange(1,31))*41)/41)
+#np.exp2(np.around(np.log2(np.arange(1,31+1))*41)/41)
 #np.arange(1,31)
-relative_frequency_list = np.exp2(np.around(np.log2(np.arange(1,100))*32)/32)
+
+#note: the val includes the 1st harmonic
+val = np.around(np.log2(np.arange(1,31+1))*17)
+print(val)
+relative_frequency_list = np.exp2(val/17)
 frequency_list = base_frequency*relative_frequency_list
-print(frequency_list)
-amp_list: list[int] = [1/x for x in range(1,100)]   # amps
+
+amp_list: list[int] = [1/x for x in range(1,31+1)]   # amps
 
 
 # Generate the sine wave
@@ -23,7 +27,7 @@ t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
 amplitude = np.iinfo(np.int16).max
 added_amp = 0
 added_sample=np.repeat(0,int(sample_rate * duration))
-for frequency, amp in zip(frequency_list,amp_list,strict=True):
+for frequency, amp in zip(np.nditer(frequency_list),amp_list,strict=True):
     solo_sample = (np.sin(2 * np.pi * frequency * t) * amp)
     added_sample = added_sample + solo_sample
     added_amp += amp
