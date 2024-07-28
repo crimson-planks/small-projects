@@ -19,21 +19,30 @@
     <label for="lasina">o pana e sitelen Lasina</label>
     <textarea id="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteELasinaTawaAki()">
     </textarea>
-    <br>{{ akiPanaPini }}
+    <br><span>{{ akiPanaPini }}</span>
     <div style="min-height: 64px;"></div>
     <h2>sE$ :ak -> sitelen Lasina</h2>
     <label for="aki">o pana e sitelen Aki</label>
     <textarea id="aki" rows="5" cols="33" v-model="akiInput" @input="AnteEAkiTawaLasina()">
     </textarea>
-    <br>{{ lasinaPanaPini }}
+    <br><span>{{ lasinaPanaPini }}</span>
+    <br>
     <a id="lukin-e-sptp" href="https://www.youtube.com/watch?v=ECH9E7PM0eQ">o lukin e suno pi toki pona lon suno mute ale mute tu tu a!</a>
+    <h3 id="nimiJanPali">pali tan kiwen soko loje</h3>
 </div>
 </body>
 <style>
 #lukin-e-sptp{
-    position: fixed;
+    position: absolute;
     margin: auto;
+    text-align: center;
+    width: 100%;
     bottom: 10%;
+}
+#nimiJanPali{
+    position: absolute;
+    bottom: 0%;
+    right: 5%;
 }
 </style>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
