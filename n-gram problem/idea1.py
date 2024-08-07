@@ -1,8 +1,5 @@
 #idea: https://discord.com/channels/301377942062366741/994960433951801374/1270176277453602907
-from collections.abc import Generator, Iterator, Iterable
-from typing import LiteralString, Optional
-from functools import lru_cache
-from collections import Counter
+from collections.abc import Iterator, Iterable
 def file_to_generator(file): #make another function to turn other streams into iterators
     while True:
         char=file.read(1)
@@ -37,7 +34,7 @@ def get_kml_table(phrase: list[str]) -> list[int]:
     return table
 
 print(get_kml_table(["toki","ike","li","toki","pona"]))
-def DO_THE_WOOOORK(word_gen: Iterable[str] | Iterator[str],phrase_to_find: list[str],table: list[int] = None):
+def DO_THE_WOOOORK(word_gen: Iterable[str] | Iterator[str],phrase_to_find: list[str],table: list[int] | None = None):
     #using KMP with modifications so that when overlaps happen, only the first one is considered
     iPattern = 0
     nP = 0
@@ -48,13 +45,18 @@ def DO_THE_WOOOORK(word_gen: Iterable[str] | Iterator[str],phrase_to_find: list[
             if iPattern == len(phrase_to_find):
                 nP+=1
                 yield iWord - iPattern + 1 #yields the index
-                iPattern = 0 #this is the part that differs from usual KMP. it doesn't have to check a match that overlaps with this match, so it just set k to 0
+                iPattern = 0 #this is the part that differs from usual KMP. it doesn't have to check a match that overlaps with this match, so it just set k to 0, (and check the next character)
             continue
         else:
             iPattern = table[iPattern]
             if iPattern < 0:
                 iPattern += 1
+def get_amount(gen: Iterable[str] | Iterator[str]):
+    nP = 0
+    for _ in gen:
+        nP+=1
     return nP
+
 
     
 
@@ -62,5 +64,7 @@ def DO_THE_WOOOORK(word_gen: Iterable[str] | Iterator[str],phrase_to_find: list[
 
 with open("corpus.txt") as corpus_file:
     char_gen=file_to_generator(corpus_file)
-    word_gen=char_gen_to_word_gen(char_gen) # mun Kekan San o, you can make a wrapper function to turn your tokenized corpus into an iterator
-    print(list(DO_THE_WOOOORK(word_gen, ["toki","pona","li","toki","suwi"])))
+    word_gen=char_gen_to_word_gen(char_gen)
+    # mun Kekan San o, you can make a wrapper function to turn your tokenized corpus into an iterator.
+    # If you do that you can remove the above 2 lines of code.
+    print(get_amount(DO_THE_WOOOORK(word_gen, ["a","mu","a"])))
