@@ -53,8 +53,8 @@
     const klpPiKalamaKon=['a','e','i','o','u']
     const klpPiKalamaPini=['n']
     const sitelenKipisi=[' ','\n','.','"'];
-    const sitelenLiAnteAlaTawaAki=[" ","\n",""]
-    const sitelenLiAnteAlaTawaLasina=[" ","\n",""]
+    const sitelenLiAnteAlaTawaAki=[' ','\n','']
+    const sitelenLiAnteAlaTawaLasina=[' ','\n','']
     const locale = undefined;
     const AnteAkiTawaLasina={
         '"': "jen",
@@ -279,11 +279,49 @@
         }
         return panaPini.join('');
     };
+    const suliESitelenNanpaWan = (sitelen)=>{
+            if([undefined,null].includes(sitelen)) return sitelen;
+            let tmpArr = sitelen.split('');
+            tmpArr[0] = tmpArr[0]?.toUpperCase();
+            return tmpArr.join('');
+        }
     const akiTawaLasina=function(sitelenAki){
-        //TODO: convert quotation marks into caps if the quote is 1 word
-        panaPini = [];
+        //TODO: convert quotation marks into names if the quote is 1 word
+        //how do I do this; this would require some backtracking,,,
+        const panaPini = [];
+        let pokiNimi = [];
+        lonInsaNimi = false;
+        lonInsaNimiWan = false;
         for(i in sitelenAki){
-            if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
+            if(sitelenAki[i]===':'){
+                console.log(pokiNimi)
+                if(lonInsaNimiWan){
+                    if(pokiNimi.length<=0) console.log("empty string!");
+                    pokiNimi[0] = suliESitelenNanpaWan(pokiNimi[0]);
+                    panaPini.push(pokiNimi.join(''));
+                    pokiNimi=[];
+                    lonInsaNimiWan=false;
+                }
+                else if(lonInsaNimi) {
+                    panaPini.push(pokiNimi.join(''));
+                    pokiNimi=[];
+                    panaPini.push('"');
+                }
+                else lonInsaNimiWan = true;
+                lonInsaNimi=!lonInsaNimi;
+                continue;
+            }
+            else if(sitelenKipisi.includes(sitelenAki[i])){
+                if(lonInsaNimiWan){
+                    panaPini.push('"');
+                    panaPini.push(pokiNimi.join(''));
+                    pokiNimi=[];
+                }
+                panaPini.push(sitelenAki[i]);
+                lonInsaNimiWan=false;
+                continue;
+            }
+            else if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
                 panaPini.push(sitelenAki[i]);
                 continue;
             }
@@ -291,7 +329,13 @@
                 console.error(`sitelen ike: ${PanaESitelenIke(sitelenAki[i])}`);
                 continue;
             }
-            panaPini.push(AnteAkiTawaLasina[sitelenAki[i]]);
+            if(lonInsaNimiWan) pokiNimi.push(AnteAkiTawaLasina[sitelenAki[i]]);
+            if(!lonInsaNimiWan) panaPini.push(AnteAkiTawaLasina[sitelenAki[i]]);
+        }
+        if(lonInsaNimiWan){
+            pokiNimi[0] = suliESitelenNanpaWan(pokiNimi[0]);
+            panaPini.push(pokiNimi.join(''));
+            pokiNimi=[];
         }
         return panaPini.join('');
     };
@@ -299,11 +343,13 @@
         data() {
             return {
             toki: 'ma o, toki a!',
-            lasinaInput: 'sina ken ala toki e ijo la sina sona ala e ona.',
+            lasinaInput: 'mun Kekan San li toki e ni tawa ilo Muni. "o nanpa e kepeken pi nimi lon toki pona"',
             akiPanaPini: '',
-            akiInput: 'sE$ pn l Yk Tw m. xp KM L m sE$ :ak:',
+            akiInput: '',
             lasinaPanaPini: '',
             }
+            //sina ken ala toki e ijo la sina sona ala e ona.
+            //sE$ pn l Yk Tw m. xp KM L m sE$ :ak:
         },
         created() {
             this.AnteELasinaTawaAki();
