@@ -286,42 +286,9 @@
             return tmpArr.join('');
         }
     const akiTawaLasina=function(sitelenAki){
-        //TODO: convert quotation marks into names if the quote is 1 word
-        //how do I do this; this would require some backtracking,,,
-        const panaPini = [];
-        let pokiNimi = [];
-        lonInsaNimi = false;
-        lonInsaNimiWan = false;
+        panaPini = [];
         for(i in sitelenAki){
-            if(sitelenAki[i]===':'){
-                console.log(pokiNimi)
-                if(lonInsaNimiWan){
-                    if(pokiNimi.length<=0) console.log("empty string!");
-                    pokiNimi[0] = suliESitelenNanpaWan(pokiNimi[0]);
-                    panaPini.push(pokiNimi.join(''));
-                    pokiNimi=[];
-                    lonInsaNimiWan=false;
-                }
-                else if(lonInsaNimi) {
-                    panaPini.push(pokiNimi.join(''));
-                    pokiNimi=[];
-                    panaPini.push('"');
-                }
-                else lonInsaNimiWan = true;
-                lonInsaNimi=!lonInsaNimi;
-                continue;
-            }
-            else if(sitelenKipisi.includes(sitelenAki[i])){
-                if(lonInsaNimiWan){
-                    panaPini.push('"');
-                    panaPini.push(pokiNimi.join(''));
-                    pokiNimi=[];
-                }
-                panaPini.push(sitelenAki[i]);
-                lonInsaNimiWan=false;
-                continue;
-            }
-            else if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
+            if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
                 panaPini.push(sitelenAki[i]);
                 continue;
             }
@@ -329,13 +296,7 @@
                 console.error(`sitelen ike: ${PanaESitelenIke(sitelenAki[i])}`);
                 continue;
             }
-            if(lonInsaNimiWan) pokiNimi.push(AnteAkiTawaLasina[sitelenAki[i]]);
-            if(!lonInsaNimiWan) panaPini.push(AnteAkiTawaLasina[sitelenAki[i]]);
-        }
-        if(lonInsaNimiWan){
-            pokiNimi[0] = suliESitelenNanpaWan(pokiNimi[0]);
-            panaPini.push(pokiNimi.join(''));
-            pokiNimi=[];
+            panaPini.push(AnteAkiTawaLasina[sitelenAki[i]]);
         }
         return panaPini.join('');
     };
