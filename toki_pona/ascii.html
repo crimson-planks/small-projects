@@ -15,7 +15,7 @@
 </head>
 <body>
 <div id="ilo">
-    <h1 style="color: chartreuse;">NOTE: a complete rework of this page is to be expected. You will experience bugs.</h1>
+    <h1 style="font-size: 72px;color: chartreuse;">NOTE: a complete rework of this page is to be expected. You will experience bugs.</h1>
     Features to be added: fix colons' bugginess and fit them within the definition.
     <h2>sitelen Lasina -> sE$ :ak</h2>
     <label for="lasina">o pana e sitelen Lasina</label>
@@ -58,6 +58,8 @@
     const sitelenLiAnteAlaTawaAki=[' ','\n','']
     const sitelenLiAnteAlaTawaLasina=[' ','\n','']
     const locale = undefined;
+    //just for debugging
+    const COLON = new function(){this.toString=function(){console.warn("tried to convert colon into latin");return "COLON"};}
     const AnteAkiTawaLasina={
         '"': "jen",
         "!": "in",
@@ -85,7 +87,7 @@
         7: 'on',
         8: 'min',
         9: 'men',
-        ":": '"',
+        ":": COLON,
         ";": "lun",
         "<": "jun",
         "=": "pon",
@@ -290,7 +292,9 @@
     const akiTawaLasina=function(sitelenAki){
         //uses for colon
         //spaces on both sides: colon
-        //
+        // space on left side but not on right and also no matching closing quote: proper noun
+        // space on left side but not on right: opening quote
+        //space on right side but not on left: closing quote
         panaPini = [];
         for(i in sitelenAki){
             if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
