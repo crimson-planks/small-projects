@@ -19,7 +19,7 @@
     Features to be added: fix colons' bugginess and fit them within the definition.
     <h2>sitelen Lasina -> sE$ :ak</h2>
     <label for="lasina">o pana e sitelen Lasina</label>
-    <textarea id="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteELasinaTawaAki()">
+    <textarea id="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteEoAnteELasinaTawaAki()">
     </textarea>
     <br><span>{{ akiPanaPini }}</span>
     <div style="min-height: 64px;"></div>
@@ -166,22 +166,22 @@
         "ü": "wu",
         "…": "n"
     }
-    const AnteMaENimiENanpa=function(panaOpen){
+    const oAnteMaENimiENanpa=function(panaOpen){
         let panaPini = {};
         for(nimi in panaOpen){
             panaPini[panaOpen[nimi]]=nimi;
         }
         return panaPini;
     }
-    const AnteLasinaTawaAki=AnteMaENimiENanpa(AnteAkiTawaLasina);
+    const oAnteoAnteELasinaTawaAki=oAnteMaENimiENanpa(AnteAkiTawaLasina);
     const PanaESitelenIke=function(stl){
         return `'${stl}' (U+${stl.charCodeAt(0).toString(16).padStart(4,'0').toUpperCase()})`
     }
-    const panaESitelenMuteIke=function(stl){
+    const oPanaESitelenMuteIke=function(stl){
         if(stl.length===1) return PanaESitelenIke(stl);
         return `'${stl}' (length: ${stl?.length})`
     }
-    const kipisiEKulupuKalama=function(sitelenLasina){
+    const oKipisiEKulupuKalama=function(sitelenLasina){
         let klpKipisi=[];
         let parsingCharList=[];
         let state="onset";
@@ -193,7 +193,7 @@
         vowel: finding vowel
         coda: finding 'n'
         */
-        const panaEKipisi=()=>{
+        const oPanaEKipisi=()=>{
                 klpKipisi.push(parsingCharList.join(''));
                 parsingCharList=[];
         };
@@ -207,14 +207,14 @@
                 miLonOpenNimi = false;
             }
             if(sitelenKipisi.includes(sitelenLasina[i])){
-                if(parsingCharList.length!==0) panaEKipisi();
+                if(parsingCharList.length!==0) oPanaEKipisi();
                 if(miLonNimiSuli) {
                     klpKipisi.push('"');
-                    panaEKipisi();
+                    oPanaEKipisi();
                     miLonNimiSuli = false;
                 }
                 klpKipisi.push(sitelenLasina[i]);
-                //panaEKipisi();
+                //oPanaEKipisi();
                 state="onset"
                 miLonOpenNimi = true;
                 continue;
@@ -222,7 +222,7 @@
             if(state==="onset"){
                 if(klpPiKalamaKiwen.includes(sitelenLasina[i].toLowerCase())){
                     if(parsingCharList.length!==0){
-                        panaEKipisi();
+                        oPanaEKipisi();
                     }
                     parsingCharList.push(sitelenLasina[i].toLowerCase());
                     state="vowel";
@@ -231,7 +231,7 @@
                     //console.log("previous: " + parsingCharList[parsingCharList.length-1]);
                     if(parsingCharList[parsingCharList.length-1]?.toLowerCase()==='n'){ //"pon{a}"
                         parsingCharList.pop();
-                        panaEKipisi();
+                        oPanaEKipisi();
                         parsingCharList.push('n');
                     }
                     parsingCharList.push(sitelenLasina[i].toLowerCase());
@@ -252,22 +252,22 @@
                     state="onset";
                 }
                 else if(klpPiKalamaKiwen.includes(sitelenLasina[i].toLowerCase())){
-                    panaEKipisi();
+                    oPanaEKipisi();
                     parsingCharList.push(sitelenLasina[i].toLowerCase());
                     state="vowel";
                 }
                 else if(klpPiKalamaKon.includes(sitelenLasina[i].toLowerCase())) {
                     console.warn(`kalama kon tu li lon ${i}`);
-                    panaEKipisi();
+                    oPanaEKipisi();
                     parsingCharList.push(sitelenLasina[i].toLowerCase());
                 }
                 else console.error(`ijo ike li lon coda: ${PanaESitelenIke(sitelenLasina[i])}`)
             }
-        }panaEKipisi();
+        }oPanaEKipisi();
         return klpKipisi;
     };
-    const lasinaTawaAki=function(sitelenLasina){
-        const kipisi = kipisiEKulupuKalama(sitelenLasina);
+    const oAnteELasinaTawaAki=function(sitelenLasina){
+        const kipisi = oKipisiEKulupuKalama(sitelenLasina);
         //console.log(kipisi);
         let panaPini = [];
         for(i in kipisi){
@@ -275,20 +275,23 @@
                 panaPini.push(kipisi[i]);
                 continue;
             }
-            else if(!(kipisi[i] in AnteLasinaTawaAki)) {
-                console.error(`kipisi ike: ${panaESitelenMuteIke(kipisi[i])}`);
+            else if(!(kipisi[i] in oAnteoAnteELasinaTawaAki)) {
+                console.error(`kipisi ike: ${oPanaESitelenMuteIke(kipisi[i])}`);
                 continue;
             }
-            panaPini.push(AnteLasinaTawaAki[kipisi[i]]);
+            panaPini.push(oAnteoAnteELasinaTawaAki[kipisi[i]]);
         }
         return panaPini.join('');
     };
-    const suliESitelenNanpaWan = (sitelen)=>{
+    const oSuliESitelenNanpaAla = (sitelen)=>{
             if([undefined,null].includes(sitelen)) return sitelen;
             let tmpArr = sitelen.split('');
             tmpArr[0] = tmpArr[0]?.toUpperCase();
             return tmpArr.join('');
         }
+    const oSonaETokiSuliENimiSuli=function(){
+
+    }
     const akiTawaLasina=function(sitelenAki){
         //uses for colon
         //spaces on both sides: colon
@@ -322,7 +325,7 @@
             //sE$ pn l Yk Tw m. xp KM L m sE$ :ak:
         },
         created() {
-            this.AnteELasinaTawaAki();
+            this.AnteEoAnteELasinaTawaAki();
             this.AnteEAkiTawaLasina();
             console.log(`ilo li lon!`);
         },
@@ -330,9 +333,9 @@
             console.log(`ilo li lon pona!`);
         },
         methods: {
-            AnteELasinaTawaAki(){
+            AnteEoAnteELasinaTawaAki(){
                 //console.log(this.lasinaInput)
-                this.akiPanaPini=lasinaTawaAki(this.lasinaInput);
+                this.akiPanaPini=oAnteELasinaTawaAki(this.lasinaInput);
             },
             AnteEAkiTawaLasina(){
                 //console.log(this.akiInput)
