@@ -19,13 +19,13 @@
     Features to be added: fix colons' bugginess and fit them within the definition.
     <h2>sitelen Lasina -> sE$ :ak</h2>
     <label for="lasina">o pana e sitelen Lasina</label>
-    <textarea id="lasina" rows="5" cols="33" v-model="lasinaInput" @input="AnteEoAnteELasinaTawaAki()">
+    <textarea id="lasina" rows="5" cols="33" v-model="lasinaInput" @input="oAnteELasinaTawaAki()">
     </textarea>
     <br><span>{{ akiPanaPini }}</span>
     <div style="min-height: 64px;"></div>
     <h2>sE$ :ak -> sitelen Lasina</h2>
     <label for="aki">o pana e sitelen Aki</label>
-    <textarea id="aki" rows="5" cols="33" v-model="akiInput" @input="AnteEAkiTawaLasina()">
+    <textarea id="aki" rows="5" cols="33" v-model="akiInput" @input="oAnteEAkiTawaLasina()">
     </textarea>
     <br><span>{{ lasinaPanaPini }}</span>
     <br>
@@ -49,7 +49,7 @@
 </style>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
-    const lonEIlo = Vue.createApp;
+    const oLonEIlo = Vue.createApp;
     const sitelenSuli = ['M','N','P','T','K','S','W','L','J','A','E','I','O','U'];
     const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j']
     const klpPiKalamaKon=['a','e','i','o','u']
@@ -58,9 +58,10 @@
     const sitelenLiAnteAlaTawaAki=[' ','\n','']
     const sitelenLiAnteAlaTawaLasina=[' ','\n','']
     const locale = undefined;
+    const Quote = new function(){this.toString=function(){return "Quote"}}
     //just for debugging
     const COLON = new function(){this.toString=function(){console.warn("tried to convert colon into latin");return "COLON"};}
-    const AnteAkiTawaLasina={
+    const AnteoAnteEAkiTawaLasina={
         '"': "jen",
         "!": "in",
         "@": "mon",
@@ -173,7 +174,7 @@
         }
         return panaPini;
     }
-    const oAnteoAnteELasinaTawaAki=oAnteMaENimiENanpa(AnteAkiTawaLasina);
+    const oAnteoAnteELasinaTawaAki=oAnteMaENimiENanpa(AnteoAnteEAkiTawaLasina);
     const PanaESitelenIke=function(stl){
         return `'${stl}' (U+${stl.charCodeAt(0).toString(16).padStart(4,'0').toUpperCase()})`
     }
@@ -283,36 +284,50 @@
         }
         return panaPini.join('');
     };
-    const oSuliESitelenNanpaAla = (sitelen)=>{
+    const oSuliESitelenNanpaWan = (sitelen)=>{
             if([undefined,null].includes(sitelen)) return sitelen;
             let tmpArr = sitelen.split('');
             tmpArr[0] = tmpArr[0]?.toUpperCase();
             return tmpArr.join('');
         }
-    const oSonaETokiSuliENimiSuli=function(){
+    const oSonaETokiSuliENimiSuli=function(sitelenAki){
+        const panaPini = [];
+        //the identification of quote and propers are worked on here
+        //ideas:
+        //
+        //found a colon:
+        //if spaces on both sides: output colon
+        //if is in a quote:
+        //  if spaces on right side: do some magic to make it a quote...
+        //     
 
     }
-    const akiTawaLasina=function(sitelenAki){
-        //uses for colon
+    const oAnteEAkiTawaLasina=function(sitelenAki){
+        //ways to interpret colon
         //spaces on both sides: colon
-        // space on left side but not on right and also no matching closing quote: proper noun
-        // space on left side but not on right: opening quote
-        //space on right side but not on left: closing quote
-        panaPini = [];
+        //  space on left side but not on right and also no matching closing quote: proper noun (capitalize first character after the colon)
+        //  space on left side but not on right: opening quote (place quotation mark in place of the colon)
+        //space on right side but not on left: closing quote (place quotation mark in place of the colon)
+
+        //maybe a state variable to determine if the ilo is in a quote.
+        //backtracking needed to change the start character to uppercase, or to put a quotation mark at the start.
+        //
+        let lonTokiSuli = false;
+        const panaPini = [];
         for(i in sitelenAki){
             if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
                 panaPini.push(sitelenAki[i]);
                 continue;
             }
-            if(!(sitelenAki[i] in AnteAkiTawaLasina)) {
+            if(!(sitelenAki[i] in AnteoAnteEAkiTawaLasina)) {
                 console.error(`sitelen ike: ${PanaESitelenIke(sitelenAki[i])}`);
                 continue;
             }
-            panaPini.push(AnteAkiTawaLasina[sitelenAki[i]]);
+            panaPini.push(AnteoAnteEAkiTawaLasina[sitelenAki[i]]);
         }
         return panaPini.join('');
     };
-    lonEIlo({
+    oLonEIlo({
         data() {
             return {
             toki: 'ma o, toki a!',
@@ -325,21 +340,21 @@
             //sE$ pn l Yk Tw m. xp KM L m sE$ :ak:
         },
         created() {
-            this.AnteEoAnteELasinaTawaAki();
-            this.AnteEAkiTawaLasina();
+            this.oAnteELasinaTawaAki();
+            this.oAnteEAkiTawaLasina();
             console.log(`ilo li lon!`);
         },
         mounted() {
             console.log(`ilo li lon pona!`);
         },
         methods: {
-            AnteEoAnteELasinaTawaAki(){
+            oAnteELasinaTawaAki(){
                 //console.log(this.lasinaInput)
                 this.akiPanaPini=oAnteELasinaTawaAki(this.lasinaInput);
             },
-            AnteEAkiTawaLasina(){
+            oAnteEAkiTawaLasina(){
                 //console.log(this.akiInput)
-                this.lasinaPanaPini=akiTawaLasina(this.akiInput);
+                this.lasinaPanaPini=oAnteEAkiTawaLasina(this.akiInput);
             }
         }
     }).mount('#ilo')
