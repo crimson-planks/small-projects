@@ -7,6 +7,6 @@ def GetCharacterUsage_OnePerWord(word_list):
     return Counter(char_usage_counter)
 def main():
     from word_list import request_word_list
-    print(GetCharacterUsage_OnePerWord(request_word_list()).most_common())
+    print(GetCharacterUsage_OnePerWord(request_word_list(["pu","ku suli","ku lili","none"],["core","common","uncommon","obscure"])).most_common())
 if __name__ == '__main__':
     main()
