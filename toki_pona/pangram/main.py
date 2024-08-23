@@ -52,7 +52,7 @@ def GetPangrams_NoAddingWordsThatAddsNoNewLetters(current_char_occurence: int,la
         else:
             for working_word_list in GetPangrams_NoAddingWordsThatAddsNoNewLetters(rslt_char_occurence,word_id,character_count+len(word)): 
                 yield (working_word_list[0]+(word_id,),working_word_list[1])
-#amount of 2 word combinations for progress bar
+#amount of 3 word combinations for progress bar
 def main():
     current_date = datetime.fromtimestamp(time(),UTC)
     book_id_str = '_'.join([SpaceSeperatedString_to_CamelCase(book) for book in book_list])
