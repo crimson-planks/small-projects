@@ -4,33 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="toki pona, esoteric writing system, ascii">
-    <meta name="description" content="ilo ni li ken ante e sitelen Lasina tawa sE$ :ak:. kin la ona li ken ante e sE$ :ak: tawa sitelen Lasina.">
+    <meta name="description" content="ilo ni li ken ante e sitelen Lasina tawa sitelen Aki pi jan Misali. kin la ona li ken ante e sitelen Aki pi jan Misali tawa sitelen Lasina.">
     <meta name="language" content="tok">
     <meta property="og:type" content="website">
     <meta property="og:title" content="sE$ :ak">
-    <meta property="og:description" content="suno pi toki pona li lon! ilo ni li ken ante e sitelen Lasina tawa sE$ :ak:. kin la ona li ken ante e sE$ :ak: tawa sitelen Lasina.">
+    <meta property="og:description" content="ilo ni li ken ante e sitelen Lasina tawa sitelen Aki pi jan Misali. kin la ona li ken ante e sitelen Aki pi jan Misali tawa sitelen Lasina.">
     <meta property="og:image" content="">
     <meta property="og:url" content="">
     <title>sE$ :ak</title>
 </head>
 <body>
 <div id="ilo">
-    <h1 style="font-size: 72px;color: chartreuse;">NOTE: a complete rework of this page is to be expected. You will experience bugs.</h1>
-    Features to be added: fix colons' bugginess and fit them within the definition.
-    <h2>sitelen Lasina -> sE$ :ak</h2>
+    <h1 style="font-size: 72px;color: chartreuse;display: none;">NOTE: a complete rework of this page is to be expected. You will experience bugs.</h1>
+    <h2>sitelen Lasina -> sE$ :ak P j :mcl</h2>
     <label for="lasina">o pana e sitelen Lasina</label>
     <textarea id="lasina" rows="5" cols="33" v-model="lasinaInput" @input="oAnteELasinaTawaAki()">
     </textarea>
     <br><span>{{ akiPanaPini }}</span>
     <div style="min-height: 64px;"></div>
-    <h2>sE$ :ak -> sitelen Lasina</h2>
-    <label for="aki">o pana e sitelen Aki</label>
+    <h2>sE$ :ak P j :mcl -> sitelen Lasina</h2>
+    <label for="aki">o pana e sitelen Aki pi jan Misali</label>
     <textarea id="aki" rows="5" cols="33" v-model="akiInput" @input="oAnteEAkiTawaLasina()">
     </textarea>
     <br><span>{{ lasinaPanaPini }}</span>
     <br>
     <a id="lukin-e-sptp" href="https://www.youtube.com/watch?v=ECH9E7PM0eQ">o lukin e suno pi toki pona lon suno mute ale mute tu tu a!</a>
-    <h3 id="nimiJanPali">pali tan kiwen soko loje</h3>
+    <h3 id="nimi-jan-pali">pali tan kiwen soko loje</h3>
 </div>
 </body>
 <style>
@@ -41,7 +40,7 @@
     width: 100%;
     bottom: 10%;
 }
-#nimiJanPali{
+#nimi-jan-pali{
     position: absolute;
     bottom: 0%;
     right: 5%;
@@ -53,17 +52,17 @@
     const sitelenSuli = ['M','N','P','T','K','S','W','L','J','A','E','I','O','U'];
     const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j']
     const klpPiKalamaKon=['a','e','i','o','u']
+    const spaceList = [' ','\n','.',undefined]
     const klpPiKalamaPini=['n']
-    const sitelenSike = ['.',',',':']
-    const sitelenKipisiLasina=[' ','\n','.','"'];
-    const sitelenKipisiAki = [' ','.']
+    const sitelenSike = ['.',',',':'];
+    const sitelenKipisiLasina=['.',',',':',' ','\n','"'];
+    const sitelenKipisiAki = [' ','\n','.']
     const sitelenLiAnteAlaTawaAki=[' ','\n','']
     const sitelenLiAnteAlaTawaLasina=[' ','\n','']
     const locale = undefined;
-    const Quote = new function(){this.toString=function(){return "Quote"}}
     //just for debugging
-    const COLON = new function(){this.toString=function(){console.warn("tried to convert colon into latin");return "COLON"};}
-    const AnteoAnteEAkiTawaLasina={
+    const COLON = new function(){this.toString=function(){console.warn("tried to convert colon into latin");return ":"};}
+    const AnteEAkiTawaLasina={
         '"': "jen",
         "!": "in",
         "@": "mon",
@@ -90,7 +89,7 @@
         7: 'on',
         8: 'min',
         9: 'men',
-        ":": COLON,
+        ":": "'",
         ";": "lun",
         "<": "jun",
         "=": "pon",
@@ -176,7 +175,7 @@
         }
         return panaPini;
     }
-    const oAnteoAnteELasinaTawaAki=oAnteMaENimiENanpa(AnteoAnteEAkiTawaLasina);
+    const AnteELasinaTawaAki=oAnteMaENimiENanpa(AnteEAkiTawaLasina);
     const PanaESitelenIke=function(stl){
         return `'${stl}' (U+${stl.charCodeAt(0).toString(16).padStart(4,'0').toUpperCase()})`
     }
@@ -212,11 +211,12 @@
             if(sitelenKipisiLasina.includes(sitelenLasina[i])){
                 if(parsingCharList.length!==0) oPanaEKipisi();
                 if(miLonNimiSuli) {
-                    klpKipisi.push('"');
-                    oPanaEKipisi();
                     miLonNimiSuli = false;
                 }
-                klpKipisi.push(sitelenLasina[i]);
+                if(sitelenSike.includes(sitelenLasina[i])){
+                    klpKipisi.push('.');
+                }
+                else klpKipisi.push(sitelenLasina[i]);
                 //oPanaEKipisi();
                 state="onset"
                 miLonOpenNimi = true;
@@ -266,7 +266,8 @@
                 }
                 else console.error(`ijo ike li lon coda: ${PanaESitelenIke(sitelenLasina[i])}`)
             }
-        }oPanaEKipisi();
+        }
+        oPanaEKipisi();
         return klpKipisi;
     };
     const oAnteELasinaTawaAki=function(sitelenLasina){
@@ -278,11 +279,15 @@
                 panaPini.push(kipisi[i]);
                 continue;
             }
-            else if(!(kipisi[i] in oAnteoAnteELasinaTawaAki)) {
+            else if(['"'].includes(kipisi[i])){
+                panaPini.push(':');
+                continue;
+            }
+            else if(!(kipisi[i] in AnteELasinaTawaAki)) {
                 console.error(`kipisi ike: ${oPanaESitelenMuteIke(kipisi[i])}`);
                 continue;
             }
-            panaPini.push(oAnteoAnteELasinaTawaAki[kipisi[i]]);
+            panaPini.push(AnteELasinaTawaAki[kipisi[i]]);
         }
         return panaPini.join('');
     };
@@ -306,7 +311,6 @@
         //if is in a quote:
         //  if space on right side:
         let kulupuPiNimiSuli = [];
-        const spaceList = [' ',undefined]
         for(let i=0;i<sitelenAki.length;i++){
             if(sitelenAki[i]!==':'){ //not a colon
                 continue;
@@ -339,6 +343,7 @@
         let kulupuPiNimiSuli = oSonaETokiSuliENimiSuliLonAki(sitelenAki);
         const panaPini = [];
         let lonNimiSuli = false;
+        let lonNanpaWanPiNimiSuli = false;
         let nanpaPiNimiSuli = 0;
         for(let i=0; i<sitelenAki.length;i++){
             if(sitelenKipisiAki.includes(sitelenAki[i])) lonNimiSuli = false;
@@ -349,6 +354,7 @@
             if(sitelenAki[i]===':') {
                 if(i===kulupuPiNimiSuli[nanpaPiNimiSuli]){
                     lonNimiSuli = true;
+                    lonNanpaWanPiNimiSuli = true;
                     nanpaPiNimiSuli++;
                     continue;
                 }
@@ -356,16 +362,18 @@
                     panaPini.push(':');
                     continue;
                 }
-                panaPini.push("'");
+                panaPini.push('"');
                 continue;
 
             }
-            if(!(sitelenAki[i] in AnteoAnteEAkiTawaLasina)) {
+            if(!(sitelenAki[i] in AnteEAkiTawaLasina)) {
                 console.error(`sitelen ike: ${PanaESitelenIke(sitelenAki[i])}`);
                 continue;
             }
-            if(lonNimiSuli) panaPini.push(AnteoAnteEAkiTawaLasina[sitelenAki[i]].toUpperCase())
-            else panaPini.push(AnteoAnteEAkiTawaLasina[sitelenAki[i]]);
+            if(lonNanpaWanPiNimiSuli)
+                panaPini.push(oSuliESitelenNanpaWan(AnteEAkiTawaLasina[sitelenAki[i]]));
+            else panaPini.push(AnteEAkiTawaLasina[sitelenAki[i]]);
+            lonNanpaWanPiNimiSuli=false;
         }
         return panaPini.join('');
     };
@@ -373,13 +381,11 @@
         data() {
             return {
             toki: 'ma o, toki a!',
-            lasinaInput: 'mun Kekan San li toki e ni tawa ilo Muni. "o nanpa e kepeken pi nimi lon toki pona"',
+            lasinaInput: 'mun Kekan San li toki e ni tawa ilo Muni: "o nanpa e kepeken pi nimi lon toki pona"',
             akiPanaPini: '',
-            akiInput: '',
+            akiInput: '3 :G} :] l tk e N Tw i~ :uN. :o #b e GBg P Nm R tk pn:',
             lasinaPanaPini: '',
             }
-            //sina ken ala toki e ijo la sina sona ala e ona.
-            //sE$ pn l Yk Tw m. xp KM L m sE$ :ak:
         },
         created() {
             this.oAnteELasinaTawaAki();
