@@ -49,14 +49,13 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
     const oLonEIlo = Vue.createApp;
-    const sitelenSuli = ['M','N','P','T','K','S','W','L','J','A','E','I','O','U'];
-    const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j']
+    const sitelenSuli = ['M','N','P','T','K','S','W','L','J','Y','A','E','I','O','U'];
+    const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j','y']
     const klpPiKalamaKon=['a','e','i','o','u']
-    const spaceList = [' ','\n','.',undefined]
     const klpPiKalamaPini=['n']
     const sitelenSike = ['.',',',':'];
     const sitelenKipisiLasina=['.',',',':',' ','\n','"'];
-    const sitelenKipisiAki = [' ','\n','.']
+    const sitelenKipisiAki = [' ','\n','.',undefined]
     const sitelenLiAnteAlaTawaAki=[' ','\n','']
     const sitelenLiAnteAlaTawaLasina=[' ','\n','']
     const locale = undefined;
@@ -158,6 +157,7 @@
         "|": 'win',
         "}": 'kan',
         "~": 'lo',
+        "¥": 'yu',
         "Ë": "tin",
         "Ï": "jin",
         "Ö": "won",
@@ -315,14 +315,14 @@
             if(sitelenAki[i]!==':'){ //not a colon
                 continue;
             }
-            if(spaceList.includes(sitelenAki[i-1])&&spaceList.includes(sitelenAki[i+1])){ // ' : '
+            if(sitelenKipisiAki.includes(sitelenAki[i-1])&&sitelenKipisiAki.includes(sitelenAki[i+1])){ // ' : '
                 continue;
             }
-            if(spaceList.includes(sitelenAki[i+1])){ // ': '
+            if(sitelenKipisiAki.includes(sitelenAki[i+1])){ // ': '
                 kulupuPiNimiSuli.pop();
                 continue;
             }
-            if(spaceList.includes(sitelenAki[i-1])){ // ' :'
+            if(sitelenKipisiAki.includes(sitelenAki[i-1])){ // ' :'
                 kulupuPiNimiSuli.push(+i);
                 continue;
             }
@@ -358,7 +358,7 @@
                     nanpaPiNimiSuli++;
                     continue;
                 }
-                if(spaceList.includes(sitelenAki[i-1])&&spaceList.includes(sitelenAki[i+1])){
+                if(sitelenKipisiAki.includes(sitelenAki[i-1])&&sitelenKipisiAki.includes(sitelenAki[i+1])){
                     panaPini.push(':');
                     continue;
                 }
