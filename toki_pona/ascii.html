@@ -54,7 +54,9 @@
     const klpPiKalamaKiwen=['m','n','p','t','k','s','w','l','j']
     const klpPiKalamaKon=['a','e','i','o','u']
     const klpPiKalamaPini=['n']
-    const sitelenKipisi=[' ','\n','.','"'];
+    const sitelenSike = ['.',',',':']
+    const sitelenKipisiLasina=[' ','\n','.','"'];
+    const sitelenKipisiAki = [' ','.']
     const sitelenLiAnteAlaTawaAki=[' ','\n','']
     const sitelenLiAnteAlaTawaLasina=[' ','\n','']
     const locale = undefined;
@@ -198,7 +200,7 @@
                 klpKipisi.push(parsingCharList.join(''));
                 parsingCharList=[];
         };
-        for(i in sitelenLasina){
+        for(let i=0; i<sitelenLasina.length;i++){
             //console.log(`c: ${sitelenLasina[i]}, state: ${state}, miLonOpenNimi: ${miLonOpenNimi}, miLonNimiSuli: ${miLonNimiSuli}`);
             if(miLonOpenNimi){
                 if(sitelenSuli.includes(sitelenLasina[i])){
@@ -207,7 +209,7 @@
                 }
                 miLonOpenNimi = false;
             }
-            if(sitelenKipisi.includes(sitelenLasina[i])){
+            if(sitelenKipisiLasina.includes(sitelenLasina[i])){
                 if(parsingCharList.length!==0) oPanaEKipisi();
                 if(miLonNimiSuli) {
                     klpKipisi.push('"');
@@ -271,7 +273,7 @@
         const kipisi = oKipisiEKulupuKalama(sitelenLasina);
         //console.log(kipisi);
         let panaPini = [];
-        for(i in kipisi){
+        for(let i=0;i<kipisi.length;i++){
             if(sitelenLiAnteAlaTawaAki.includes(kipisi[i])){
                 panaPini.push(kipisi[i]);
                 continue;
@@ -290,17 +292,38 @@
             tmpArr[0] = tmpArr[0]?.toUpperCase();
             return tmpArr.join('');
         }
-    const oSonaETokiSuliENimiSuli=function(sitelenAki){
+    const oSonaETokiSuliENimiSuliLonAki=function(sitelenAki){
         const panaPini = [];
         //the identification of quote and propers are worked on here
         //ideas:
-        //
+        //if a part of the input is a quote: group them into a list
+        //if there are quotes inside quotes:
+        //  have a list of indexes the left-side quotmarks (lquotList)
         //found a colon:
+        //if space on left side:
+        //  lquotList.append(i);
         //if spaces on both sides: output colon
         //if is in a quote:
-        //  if spaces on right side: do some magic to make it a quote...
-        //     
-
+        //  if space on right side:
+        let kulupuPiNimiSuli = [];
+        const spaceList = [' ',undefined]
+        for(let i=0;i<sitelenAki.length;i++){
+            if(sitelenAki[i]!==':'){ //not a colon
+                continue;
+            }
+            if(spaceList.includes(sitelenAki[i-1])&&spaceList.includes(sitelenAki[i+1])){ // ' : '
+                continue;
+            }
+            if(spaceList.includes(sitelenAki[i+1])){ // ': '
+                kulupuPiNimiSuli.pop();
+                continue;
+            }
+            if(spaceList.includes(sitelenAki[i-1])){ // ' :'
+                kulupuPiNimiSuli.push(+i);
+                continue;
+            }
+        }
+        return kulupuPiNimiSuli;
     }
     const oAnteEAkiTawaLasina=function(sitelenAki){
         //ways to interpret colon
@@ -313,17 +336,36 @@
         //backtracking needed to change the start character to uppercase, or to put a quotation mark at the start.
         //
         let lonTokiSuli = false;
+        let kulupuPiNimiSuli = oSonaETokiSuliENimiSuliLonAki(sitelenAki);
         const panaPini = [];
-        for(i in sitelenAki){
+        let lonNimiSuli = false;
+        let nanpaPiNimiSuli = 0;
+        for(let i=0; i<sitelenAki.length;i++){
+            if(sitelenKipisiAki.includes(sitelenAki[i])) lonNimiSuli = false;
             if(sitelenLiAnteAlaTawaLasina.includes(sitelenAki[i])){
                 panaPini.push(sitelenAki[i]);
                 continue;
+            }
+            if(sitelenAki[i]===':') {
+                if(i===kulupuPiNimiSuli[nanpaPiNimiSuli]){
+                    lonNimiSuli = true;
+                    nanpaPiNimiSuli++;
+                    continue;
+                }
+                if(spaceList.includes(sitelenAki[i-1])&&spaceList.includes(sitelenAki[i+1])){
+                    panaPini.push(':');
+                    continue;
+                }
+                panaPini.push("'");
+                continue;
+
             }
             if(!(sitelenAki[i] in AnteoAnteEAkiTawaLasina)) {
                 console.error(`sitelen ike: ${PanaESitelenIke(sitelenAki[i])}`);
                 continue;
             }
-            panaPini.push(AnteoAnteEAkiTawaLasina[sitelenAki[i]]);
+            if(lonNimiSuli) panaPini.push(AnteoAnteEAkiTawaLasina[sitelenAki[i]].toUpperCase())
+            else panaPini.push(AnteoAnteEAkiTawaLasina[sitelenAki[i]]);
         }
         return panaPini.join('');
     };
