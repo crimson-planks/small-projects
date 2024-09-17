@@ -1,0 +1,3 @@
+(Assuming v2.2 of Map File)
+78 9C implies that it was compressed using zlib with default compression (no preset library)
+The data is flipped vertically when read and when written.
