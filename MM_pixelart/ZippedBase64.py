@@ -1,7 +1,7 @@
 import base64
 import zlib
 
-def pad_bytes_to_str(b: bytes) -> str:
+def pad_bytes_to_readable_str(b: bytes) -> str:
     rslt_list = []
     for a in b:
         rslt_list.append(hex(a)[2:].upper().zfill(2))
