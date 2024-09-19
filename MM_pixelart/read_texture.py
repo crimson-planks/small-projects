@@ -18,8 +18,8 @@ def main():
         jf = json.load(f)
         for texture in jf["Texture"]:
             image = decode_texture(MM_Texture(**texture))
-            if texture["ID"]=="num":
-                image.save("MM_pixelart/num.png")
+            if texture["ID"]=="windowslogo":
+                image.save(r"MM_pixelart/windowslogo.png")
 
 if __name__=="__main__":
     main()

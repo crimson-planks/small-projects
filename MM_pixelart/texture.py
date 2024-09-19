@@ -1,4 +1,9 @@
 from typing import NamedTuple
+def NamedTuple_to_dict(nt: NamedTuple) -> dict:
+    v = {}
+    for i,key in enumerate(nt._fields):
+        v[key] = nt[i]
+    return v
 class MM_Texture(NamedTuple):
     Data: str
     DataType: str

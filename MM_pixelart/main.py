@@ -1,7 +1,8 @@
-from texture import MM_Texture
+from texture import MM_Texture, NamedTuple_to_dict
 from create_texture import encode_texture
 from read_texture import decode_texture
 from PIL import Image, ImageDraw
+import json
 def yield_binary(size: int):
     rslt=[0]*size
     yield rslt.copy()
@@ -23,7 +24,16 @@ def imgify_bin(points) -> Image.Image:
     img = Image.frombytes("RGBA",(2,2),bytes(pointdata))
     img=img.resize((8,8),Image.Resampling.NEAREST)
     return img
+texture_list = []
 for i, b in enumerate(yield_binary(4)):
     texture = encode_texture(imgify_bin(b),hex(i)[2:])
-    print()
-MM_Texture()._fields
+    texture_list.append(NamedTuple_to_dict(texture))
+
+from pathlib import Path
+filepath = Path(input("file path: "))
+mapjson={}
+with filepath.open("r") as fr:
+    mapjson = json.load(fr)
+    mapjson["Texture"]=texture_list
+with filepath.open("w") as fw:
+    json.dump(mapjson,fw,indent=4)
