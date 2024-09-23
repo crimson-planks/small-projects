@@ -30,6 +30,8 @@ for i, b in enumerate(yield_binary(4)):
     texture_list.append(NamedTuple_to_dict(texture))
 
 from pathlib import Path
+
+
 filepath = Path(input("file path: "))
 mapjson={}
 with filepath.open("r") as fr:
