@@ -14,4 +14,12 @@ class MM_PixelArt(NamedTuple):
     PixelArtID: str
     Type: 6040
     X: float
-    y: float
+    Y: float
+class MM_AnimatedPixelArt(NamedTuple):
+    Behavior: int
+    Delay: int
+    PixelArtID: str
+    Scale: int
+    Type: 6044
+    X: float
+    Y: float
