@@ -27,9 +27,8 @@ with open(basepath/"most_common_textures.json") as jsonfile:
         pass
 def main():
     framespath = basepath/"frames"
-    init_image = Image.open(framespath/"0.png")
-    block_amount = (init_image.size[0]//8,init_image.size[1]//8)
-    init_image.close()
+    with Image.open(framespath/"0.png") as init_image:
+        block_amount = (init_image.size[0]//8,init_image.size[1]//8)
     print(block_amount)
     data_array = np.zeros((6507,block_amount[1],block_amount[0]),dtype=np.uint8)
     with tqdm(total=6507) as pbar:
