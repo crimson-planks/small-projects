@@ -30,8 +30,8 @@ def main():
     with Image.open(framespath/"0.png") as init_image:
         block_amount = (init_image.size[0]//8,init_image.size[1]//8)
     print(block_amount)
-    data_array = np.zeros((6507,block_amount[1],block_amount[0]),dtype=np.uint8)
-    with tqdm(total=6507) as pbar:
+    data_array = np.zeros((6507+1,block_amount[1],block_amount[0]),dtype=np.uint8)
+    with tqdm(total=6507, desc="Quantizing frames... ") as pbar:
         img_index = -1
         while True:
             img_index+=1
@@ -42,11 +42,11 @@ def main():
                         imgblock = img.crop((x*8, y*8, x*8+8, y*8+8))
                         block_bytes = imgblock.tobytes()
                         if block_bytes in most_common_textures_dict:
-                            data_array[img_index][y][x] = most_common_textures_dict[block_bytes]
+                            data_array[img_index, y, x] = most_common_textures_dict[block_bytes]
                         else:
-                            data_array[img_index][y][x] = find_closest_texture(block_bytes)
+                            data_array[img_index, y, x] = find_closest_texture(block_bytes)
             pbar.update()
-            if img_index>=100: break
+            if img_index>=6507: break
     compressed_data = zlib.compress(data_array.tobytes())
     with open(basepath/"pixelart_data.bin",mode="wb") as data_file:
         data_file.write(compressed_data)

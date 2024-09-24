@@ -12,14 +12,19 @@ class MM_Texture(NamedTuple):
     Width: int
 class MM_PixelArt(NamedTuple):
     PixelArtID: str
-    Type: 6040
     X: float
     Y: float
+    Type: int = 6040
 class MM_AnimatedPixelArt(NamedTuple):
     Behavior: int
     Delay: int
+    IsFront: bool
     PixelArtID: str
     Scale: int
-    Type: 6044
     X: float
     Y: float
+    Type: int = 6044
+def main():
+    print(NamedTuple_to_dict(MM_PixelArt("e3",100.,200.)))
+if __name__=="__main__":
+    main()
