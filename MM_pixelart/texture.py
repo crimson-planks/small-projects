@@ -25,6 +25,13 @@ class MM_AnimatedPixelArt(NamedTuple):
     X: float
     Y: float
     Type: int = 6044
+class MM_CustomEnemy(NamedTuple):
+    PixelArtID : str
+    TemplateID : str
+    X : float
+    Y : float
+    Type : int = 3068
+
 def main():
     print(NamedTuple_to_dict(MM_PixelArt("e3",100.,200.)))
 if __name__=="__main__":

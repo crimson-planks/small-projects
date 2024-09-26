@@ -1,3 +1,5 @@
 (Assuming v2.2 of Map File)
 78 9C implies that it was compressed using zlib with default compression (no preset library)
 The data is flipped vertically when read and when written.
+
+An autoscroll value of 1.000000 travels 15/4 blocks/second, up to 8.000000 (30 blocks/second)

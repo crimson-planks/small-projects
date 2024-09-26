@@ -17,7 +17,7 @@ with open(basepath/"pixelart_data.bin","br") as compressed_data_file:
     decompressed_data = zlib.decompress(compressed_data_file.read())
     data_array = np.reshape(np.frombuffer(decompressed_data,np.uint8),(6507+1,block_amount[1],block_amount[0]))
 
-EventObject_list: list[MM_AnimatedPixelArt]=[None]*(block_amount[0]*block_amount[1])
+EventObject_list: list[dict]=[None]*(block_amount[0]*block_amount[1])
 with tqdm(desc="converting pixelart data to AnimatedPixelArt format",total=block_amount[0]*block_amount[1]) as pbar:
     for y in range(block_amount[1]):
         for x in range(block_amount[0]):
