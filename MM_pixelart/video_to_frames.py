@@ -48,7 +48,7 @@ with tqdm(total=6507, desc="Processing frames... ") as pbar:
         
         img: Image.Image = Image.fromarray(frame, "RGB")
         img = img.crop((1,2,img.size[0]-1, img.size[1]-2)) #Bad Apple has a very thin border around the rectangle
-        if index==150: img.show()
+        
         if video_dimensions==None: video_dimensions = img.size
         if resized_video_dimensions==None:
             if pixel_dimensions[0]/pixel_dimensions[1] > video_dimensions[0]/video_dimensions[1]:

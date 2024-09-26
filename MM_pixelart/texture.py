@@ -16,6 +16,7 @@ class MM_PixelArt(NamedTuple):
     Y: float
     Type: int = 6040
 class MM_AnimatedPixelArt(NamedTuple):
+    AnimationBase: int
     Behavior: int
     Delay: int
     IsFront: bool

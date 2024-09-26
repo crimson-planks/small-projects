@@ -22,13 +22,20 @@ with tqdm(desc="converting pixelart data to AnimatedPixelArt format",total=block
     for y in range(block_amount[1]):
         for x in range(block_amount[0]):
             PixelArtID_csv = ','.join(hex(n)[2:] for n in data_array[:,y,x])
-            EventObject_list[y*block_amount[0]+x] = NamedTuple_to_dict(MM_AnimatedPixelArt(4, 2, True, PixelArtID_csv, 1, 8.0 + 8*x, 8.0 + 8*y))
+            EventObject_list[y*block_amount[0]+x] = NamedTuple_to_dict(MM_AnimatedPixelArt(0, 4, 2, True, PixelArtID_csv, 1, 8.0 + 8*x, 8.0 + 8*y))
             pbar.update()
 
 
 map_json: dict = {}
 with open(file_path,'r') as fr:
     map_json = json.load(fr)
-map_json["EventObject"].extend(EventObject_list)
+fin_EventObject_list = []
+for EventObject in map_json["EventObject"]:
+    if EventObject["Type"]!=6044:
+        fin_EventObject_list.append(EventObject) #remove all AnimatedPixelArt
+
+fin_EventObject_list.extend(EventObject_list)
+map_json["EventObject"] = fin_EventObject_list
+
 with open(file_path,'w') as fw:
     json.dump(map_json,fw,indent=4)
