@@ -50,6 +50,6 @@ def main():
     compressed_data = zlib.compress(data_array.tobytes())
     with open(basepath/"pixelart_data.bin",mode="wb") as data_file:
         data_file.write(compressed_data)
-    print("Done!")
 if __name__=="__main__":
     main()
+    print("Done!")
