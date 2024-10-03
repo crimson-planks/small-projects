@@ -1,0 +1,10 @@
+content word = "ijo" | "ala"; (* uhhhhhh *)
+content phrase = content word, {" ", content word};
+li phrase = "li", " ", content phrase;
+e phrase = "e", " ", content phrase;
+en phrase = "en", " ", content phrase
+preposition = "tawa" | "lon" | "sama" | "tan" | "kepeken";
+prepositional phrase = preposition, " ", content phrase;
+mi or sina verb phrase = ("mi" | "sina"), content phrase;
+(* respecting the extended li nasin *)
+independent clause = (mi or sina verb phrase | content phrase, {" ", en phrase}, li phrase), {" ", li phrase}, {" ", e phrase}, {" ", prepositional phrase};
