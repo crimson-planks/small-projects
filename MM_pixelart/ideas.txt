@@ -5,10 +5,9 @@ The texture data is flipped vertically when read and when written.
 Below are for the map itself
 
 Bad Apple!! (feat. nomico)
-give extra health so the player doesn't die when hit by a CE.
-An autoscroll value of 1.000000 travels 15/4 blocks/second, up to 8.000000 (30 blocks/second)
 
 Find the base rhythm interval to find the MM_speed
 
 1 MM_speed = 15/4 blocks/second
-lcm(16th notes and 12th notes) = 48th notes :/ :( D: ): QQ
+
+18 + 7 = 25 frames is the minimum delay in between consecutive notes such that all the notes sync
