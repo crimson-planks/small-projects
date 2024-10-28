@@ -1,0 +1,27 @@
+f(a,x) = a^^x (f should be infinitely differentiable in respect to x)
+f(a,0) = 1
+f(a,-1) = 0
+(-1=<x<=0) f(a,x) = ...
+f(a,x+1) = ((a^x)∘f)(x=x) = a^f(a,x)
+lim(x→0-)(f(a,x)) = f(a,0) = lim(x→0+)(f(a,x))
+conditions:
+f(a,0) = ((a^x)∘f)(x=-1) = a^f(a,-1)
+(d/dx)(f(a,x+1))(x=-1) = (d/dx)(a^f(a,x))(x=-1)
+(d/dx)(f(a,x))(x=0) = (d/dx)((a^x)∘f)(x=-1)
+(d/dx)(f(a,x))(x=0) = (d/dx)(a^x)(x=f(a,-1))*(d/dx)(f(a,x))(x=-1)
+(d/dx)(f(a,x))(x=0) = (d/dx)(a^x)(x=f(a,-1))*(d/dx)(f(a,x))(x=-1)
+(d/dx)(f(a,x))(x=0) = (a^x * ln(a))(x=f(a,-1))*(d/dx)(f(a,x))(x=-1)
+(d/dx)(f(a,x))(x=0) = (a^f(a,-1) * ln(a))*(d/dx)(f(a,x))(x=-1)
+(d/dx)(f(a,x))(x=0) = (a^0 * ln(a))*(d/dx)(f(a,x))(x=-1)
+(d/dx)(f(a,x))(x=0) = ln(a)*(d/dx)(f(a,x))(x=-1)
+
+ (d/dx)(a^f(a,x))
+=(d/dx)((a^x)∘f)
+=(d/dx)(a^x)(x=f(a,x))*(d/dx)(f(a,x))
+=(a^x * ln(a))(x=f(a,x))*(d/dx)(f(a,x))
+=a^f(a,x) * ln(a)*(d/dx)(f(a,x))
+
+ (d/dx)(d/dx)(a^f(a,x))
+=(d/dx)(d/dx)((a^x)∘f)
+=((d/dx)f)^2*(d/dx)(d/dx)(a^x)(x=f(a,x)) + ((d/dx)(d/dx)f)*(d/dx)(a^x)(x=f(a,x))
+=((d/dx)f)^2*(a^f(a,x)*ln(a)^2) + (d/dx)(d/dx)f*(a^f(a,x)*ln(a))
