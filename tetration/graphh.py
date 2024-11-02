@@ -28,7 +28,6 @@ you can make more accurate approximations by making it 3 times differentiable, o
 a1 = 6 - 2*np.sqrt(6)
 a2 = (-a1**3 -2*a1**2 -36*a1 +36)/(6*a1 - 24)
 quartic_approximation= np.array([1, a1, a2, 2*a2 -a1**2/3, -a1**2/4 + a2])
-print(quartic_approximation)
 cubic_approximation = np.array([1,6 - 2*np.sqrt(6),15 - 6*np.sqrt(6),10 - 4*np.sqrt(6),0])
 linear_approximation = np.array([1,1,0,0,0])
 def e_tetration_base_case(x: np.float64,polynomial):

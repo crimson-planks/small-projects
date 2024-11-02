@@ -1,3 +1,33 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath, amssymb, amsthm}
+%SetFonts
+
+%SetFonts
+
+
+\title{An Analytic Natural Tetration Function}
+\author{The Author}
+%\date{}							% Activate to display a given date or no date
+
 \begin{document}
-a_0 + a_1x + a_2x^2 = a_3x^3
-\end{document}
+\maketitle
+
+Find $NT$ such that:
+$\begin{cases}
+NT(x+1) = e^{NT(x)}\\
+NT(-1) = 0\\
+NT(0) = 1\\
+NT'(0) = \frac{d}{dx}({e^{NT(x)}})(-1)\\
+NT''(0) = \frac{d}{dx}({e^{NT(x)}})(-1)\\
+\dots\\
+NT^{(n)}(0) = \frac{d^n}{dx^n}({e^{NT(x)}})(-1)& \text{for all $n \in \mathbb{Z}^+$}\\
+\end{cases}$
+
+\end{document}  
