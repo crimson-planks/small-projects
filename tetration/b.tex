@@ -19,18 +19,27 @@
 \begin{document}
 \maketitle
 
-Find $NT \text{x | 0 <= x <= 1}$ such that:
+Find $NT \{x | 0 \leq x \leq 1\}$ such that:
 $\begin{cases}
-NT(x+1) = e^{NT(x)}\\
-NT(-1) = 0\\
-NT(0) = 1\\
-NT'(0) = \frac{d}{dx}({e^{NT(x)}})(-1)\\
-NT''(0) = \frac{d}{dx}({e^{NT(x)}})(-1)\\
-\dots\\
-NT^{(n)}(0) = \frac{d^n}{dx^n}({e^{NT(x)}})(-1)& \text{for all $n \in \mathbb{Z}^+$}\\
+	NT(-1) = 0\\
+	NT(0) = 1\\
+	NT'(0) = \frac{d}{dx}({e^{NT(x)}})(-1)\\
+	NT''(0) = \frac{d}{dx}({e^{NT(x)}})(-1)\\
+	\dots\\
+	NT^{(n)}(0) = \frac{d^n}{dx^n}({e^{NT(x)}})(-1)& \text{for all $n \in \mathbb{Z}^+$}\\
 \end{cases}$\\
+$g(x)=(a_0+a_1x+a_2x^2+a_3x^3+\dots)$
+Assume that $NT(x) = (x+1)g(x)$\\
+$=a_0+(a_0+a_1)x+(a_1+a_2)x^2+(a_2+a_3)x^3+\dots$\\
+$NT(0)=a_0$\\
+$NT'(x)=g(x)+(x+1)g'(x)$\\
+$NT'(0)=a_0+a_1$\\
+$NT''(x)=2g'(x)+(x+1)g''(x)$\\
+$NT''(0)=$\\
 
-$\frac{d^n}{dx^n}({e^{NT(x)}})(-1) = e^{NT(x)}B_n(NT'(-1),NT''(-1),...,NT^{(n)}(-1))$ ($B_n$ is the nth complete Bell exponential)\\
-$NT^{(n)}(0) = e^{NT(x)}B_n(NT'(-1),NT''(-1),...,NT^{(n)}(-1))$
-$NT^{(n)}(0) = e^{NT(x)}B_n(NT'(-1),NT''(-1),...,NT^{(n)}(-1))$
-\end{document}  
+$\frac{d^n}{dx^n}({e^{NT(x)}})(-1) = e^{NT(x)}B_n(NT'(-1),NT''(-1),...,NT^{(n)}(-1))$ ($B_n$ is the $n$th complete exponential Bell polynomial)\\
+$NT^{(n)}(0) = e^{NT(x)}B_n(NT'(-1),NT''(-1),...,NT^{(n)}(-1))$\\
+
+$\begin{cases}
+\end{cases}$\\
+\end{document}
