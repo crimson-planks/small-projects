@@ -41,7 +41,7 @@ class Multiplication(MathObject):
         return f"Multiplication{self.operands}"
     def differentiate(self, respect):
         product = []
-        for i, operand in enumerate(self.operands):
+        for i in self.operands:
             product.append([operand.differentiate(respect) if i==j else operand for j,operand in enumerate(self.operands)])
         return Addition(product)
 class Exponentiation(MathObject):
@@ -52,4 +52,6 @@ class Exponentiation(MathObject):
         self.power = power
     def __repr__(self):
         return f"Exponentiation[{self.base},{self.power}]"
+    def differentiate(self, respect):
+        return super().differentiate(respect)
 print((Constant(2)*Variable('x')).differentiate(Variable('x')))
