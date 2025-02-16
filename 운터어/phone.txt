@@ -5,10 +5,14 @@ Vowels:
 ㅜ (u) /u/ [u]
 ㅣ (i) /i/ [i]
 ㅟ (y) /y/ [y]
+ㅡ (ï) /ɯ/ [ɯ]
 
 Consonants:
 ㄹ (r) /r/ [ɾ]
+ㄹㄹ (l) /l/ [l]
 ㅅ (s) /s/ [s]
+ㅈ (dz) /dz/ [dz]
+ㅊ (ts) /ts/ [ts]
 ㅍ (p) /p/ [p]
 ㅂ (b) /b/ [b]
 ㅁ (m) /m/ [m]
