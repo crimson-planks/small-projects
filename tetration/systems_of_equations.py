@@ -53,5 +53,5 @@ class Exponentiation(MathObject):
     def __repr__(self):
         return f"Exponentiation[{self.base},{self.power}]"
     def differentiate(self, respect):
-        return super().differentiate(respect)
+        raise NotImplementedError 
 print((Constant(2)*Variable('x')).differentiate(Variable('x')))

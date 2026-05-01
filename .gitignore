@@ -8,3 +8,6 @@ tetration/*.log
 tetration/*.pdf
 tetration/*.synctex.gz
 tetration/*.aux
+*/*.aux
+*/*.log
+*/*.synctex.gz
